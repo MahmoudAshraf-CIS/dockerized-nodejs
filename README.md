@@ -17,3 +17,15 @@ view the page
 ```cli
 http://localhost:8080
 ```
+once the application is up and running correctly locally it was published to docker hub and it's available [here](https://hub.docker.com/r/mnnsashraf/helloworld-nodejs)
+
+Commit the image
+```cli
+docker commit <container_id> mnnsAshraf/helloworld-nodejs:latest
+```
+
+Push the image to docker hub
+```cli
+docker push mnnsashraf/helloworld-nodejs:latest
+```
+
