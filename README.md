@@ -5,27 +5,82 @@ was created based on this [guide](https://nodejs.org/en/docs/guides/nodejs-docke
 
 Building your image
 ```cli
-docker build . -t <your username>/node-web-app
+docker build . -t helloworld-nodejs
 ```
 
-Run the image
+### Run the image
+
+1. #### In docker container
+      ```cli
+      docker run -p 8080:8080 -d helloworld-nodejs
+      ```
+
+      view the page 
+      ```cli
+      http://localhost:8080
+      ```
+      once the application is up and running correctly locally it was published to docker hub and it's available [here](https://hub.docker.com/r/mnnsashraf/helloworld-nodejs)
+
+       
+
+2. #### In K8s cluster 
+
+
+   ##### `in-line` method is used here but it can also be in .yaml deployment
+      [See Guide here](Deplyoment/README.md)
+
+    Create a deployment 
+    ```cli
+    kubectl create deployment helloworld-nodejs-server --image=mnnsashraf/helloworld-nodejs
+    ```
+
+    then, you may expose the deployment over loadbalancer
+
+    ```cli
+    kubectl expose deployment helloworld-nodejs-server --type LoadBalancer --port=8080 --target-port 8080
+    ```
+    Open jenkins interface
+    ```cli
+    http://loadbalancerip
+    ```
+
+     
+
+     - - - - 
+# Publish to docker hub #
+
+Login to docker hub using your user name and password
 ```cli
-docker run -p 8080:8080 -d <your username>/node-web-app
+docker login
 ```
-
-view the page 
+Build and run a container
 ```cli
-http://localhost:8080
+docker image build -t helloworld-nodejs .
 ```
-once the application is up and running correctly locally it was published to docker hub and it's available [here](https://hub.docker.com/r/mnnsashraf/helloworld-nodejs)
 
-Commit the image
 ```cli
-docker commit <container_id> mnnsAshraf/helloworld-nodejs:latest
+docker run -p 8080:8080 -d helloworld-nodejs
 ```
 
-Push the image to docker hub
+Get the container id
+```cli
+$ docker ps 
+CONTAINER ID   IMAGE                    ...........
+d1a2197c1bb9    helloworld-nodejs       ...........
+```
+
+```cli
+docker container commit <containet_id> <dockerHubUserName>/helloworld-nodejs:tag
+```
+
+```cli
+# Example
+docker container commit d1a2197c1bb9 mnnsashraf/helloworld-nodejs:latest
+```
+Push to docker hub
+
 ```cli
 docker push mnnsashraf/helloworld-nodejs:latest
 ```
+
 
