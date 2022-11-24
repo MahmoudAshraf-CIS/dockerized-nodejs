@@ -3,14 +3,14 @@ kind: Service
 metadata:
   name: helloworld
   labels:
-    app: helloworld
+    kind : "worker"
 spec:
   ports:
   - name: http
     port: 8000
     targetPort: 8000
   selector:
-    app: helloworld
+    kind : "worker"
   type: LoadBalancer
 ---
 apiVersion: apps/v1
@@ -18,12 +18,12 @@ kind: Deployment
 metadata:
   name: helloworld
   labels:
-    app: helloworld
+    kind : "worker"
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: helloworld
+      kind : "worker"
   template:
     metadata:
       labels:
