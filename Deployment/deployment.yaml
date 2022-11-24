@@ -7,8 +7,8 @@ metadata:
 spec:
   ports:
   - name: http
-    port: 8000
-    targetPort: 8000
+    port: 80
+    targetPort: 80
   selector:
     kind : "worker"
   type: LoadBalancer
@@ -31,10 +31,6 @@ spec:
     spec:
       containers:
       - name: helloworld
-        image: signalsciences/example-helloworld:latest
-        imagePullPolicy: IfNotPresent
-        args:
-        # Address for the app to listen on
-        - localhost:8000
+        image: nginx:stable
         ports:
-        - containerPort: 8000
+        - containerPort: 80
