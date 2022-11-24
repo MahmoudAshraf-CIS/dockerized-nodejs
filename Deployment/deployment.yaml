@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld-nodejs
+  labels:
+    app: helloworld-nodejs
+spec:
+  ports:
+  - name: http
+    port: 8000
+    targetPort: 8000
+  selector:
+    app: helloworld-nodejs
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-nodejs
+  labels:
+    app: helloworld-nodejs
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: helloworld-nodejs
+  template:
+    metadata:
+      labels:
+        app: helloworld-nodejs
+    spec:
+      containers:
+      - name: helloworld
+        image: mnnsashraf/helloworld-nodejs:latest
+        imagePullPolicy: IfNotPresent
+        args:
+        # Address for the app to listen on
+        - localhost:8000
+        ports:
+        - containerPort: 8000
