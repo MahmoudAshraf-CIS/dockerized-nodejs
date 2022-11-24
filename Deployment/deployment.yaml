@@ -27,7 +27,7 @@ spec:
   template:
     metadata:
       labels:
-        app: helloworld
+         kind : "worker"
     spec:
       containers:
       - name: helloworld
