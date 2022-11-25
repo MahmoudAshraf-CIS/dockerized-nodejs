@@ -3,34 +3,40 @@ kind: Service
 metadata:
   name: helloworld
   labels:
-    kind : "worker"
+    app: front
 spec:
   ports:
-  - name: http
-    port: 80
-    targetPort: 8080
+    - name: http
+      port: 80
+      targetPort: 8080
   selector:
-    kind : "worker"
+    app: front
   type: LoadBalancer
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: helloworld
   labels:
-    kind : "worker"
+    app: front
 spec:
   replicas: 2
   selector:
     matchLabels:
-      kind : "worker"
+      app: front
   template:
     metadata:
       labels:
-         kind : "worker"
+        app: front
     spec:
       containers:
-      - name: helloworld
-        image: mnnsashraf/helloworld-nodejs:latest
-        ports:
-        - containerPort: 8080
+        - name: helloworld
+          image:  mnnsashraf/helloworld-nodejs:latest
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
